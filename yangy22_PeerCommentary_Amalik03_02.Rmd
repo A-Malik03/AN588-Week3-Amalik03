@@ -1,0 +1,89 @@
+---
+title: "yangy22_PeerCommentary_Amalik03_02"
+author: "Emily Yang"
+date: "`r Sys.Date()`"
+subtitle: "Assignment 2: Titis in the Mist…"
+output:
+  prettydoc::html_pretty:
+    toc: true
+    theme: cayman
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+    
+    
+---
+<center><img src="https://cnprc.ucdavis.edu/wp-content/uploads/2014/07/Aria+013-e1404839846281.jpg"></center>
+EY: We have the same Titi monkey photo. I like how you centered it. <br>
+
+
+# AN588 Homework Assignment 2 
+## Context 
+Every Saturday morning, at the same time, a primatologist goes and sits in the forest to listen for titi monkey calls, counting the number of calls they hear in a 2 hour window from 5am to 7am. Based on previous knowledge, she believes that the mean number of calls she will hear in that time is exactly 15. Let X represent the appropriate Poisson random variable of the number of calls heard in each monitoring session.
+```{r}
+library(manipulate)
+library(tidyverse)
+```
+## What is the probability that she will hear more than 8 calls during any given session?
+```{r}
+x <- 8:30
+l <- 15
+probset <- ppois(q = x, lambda = l, lower.tail = FALSE) #Vector of probabilities of calls successfully being more than x, up to x= 30 calls
+barplot(probset, names.arg = x, space = 0, xlab = "Number of Calls", ylab = "Pr(X>x)", main = "Cumulative Probability") #Makes barplot of the probabilities in probset
+
+probset[1] #Reports the probability of hearing more than 8 calls from the Titi monkeys
+```
+EY: I also used ppois here with the lower.tail = FALSE. I think since it was asking for more than 8 calls your x should be from 9:30.<br> 
+
+## What is the probability that she will hear no calls in a session?
+```{r}
+x <- 0:30
+l <- 15
+probset <- dpois(x = x, lambda = l) #Vector of probabilities of hearing x calls, ranging from x=0 calld to x=30 calls, with a poisson distribution
+barplot(probset, names.arg = x, space = 0, xlab = "Number of calls", ylab = "Pr(X=x)", main = "Probability Mass Function") #plots the probabilities in prob
+probset[1] # Probability of hearing 0 calls
+```
+EY: Its nice that you have the entire probability mass function printed. Personally I might change the label of the Y-axis to something more descriptive. Its hard to read Pr(X=x) and immediately know what it means.<br>
+
+## What is the probability that she will hear exactly 3 calls in a session?
+```{r}
+x <- 0:30
+l <- 15
+probset <- dpois(x = x, lambda = l) #Vector of probabilities of hearing x calls, ranging from x=0 calld to x=30 calls with poisson distribution
+barplot(probset, names.arg = x, space = 0, xlab = "Number of calls", ylab = "Pr(X=x)", main = "Probability Mass Function") #plots the probabilities in prob2
+probset[4] # Probability of hearing 3 calls
+#Is there a better way to print when x=3 other than indexing the dpois vector (Other than starting the plot at 3 or just plotting 3)?
+```
+EY: I think probset[4] is perfectly fine way to print. I set x<-3 since the question was only asking for exactly 3 calls. <br>
+
+## Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+```{r}
+x <- 0:30
+l <- 15
+probset <- dpois(x = x, lambda = l) #Vector of probabilites using Poisson distribution of 0 to 30
+barplot(probset, names.arg = x, space = 0, xlab = "Number of calls", ylab = "Pr(X=x)", main = "Probability Mass Function") #Plots the Poisson distribution
+```
+<br>EY: I did this the same way.<br>
+
+## Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions).
+```{r}
+SimCalls <- rpois(104, lambda = l) #Vector of length 104 contain all th enumber of calls recorded(ranging from 0 calls to 30 calls, using the Poisson distribution set in the variable probset)
+SimCalls
+```
+## Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?
+```{r}
+hist(SimCalls, xlim = c(0, 30), ylim = c(0, 30), xlab = "Number of Calls", ylab = "Frequency", main = "Simulated Calls Over 104 Sessions") #histogram of SimCall as a freqiency
+
+```
+
+Compared to the probability mass function, the histogram has a smaller range and thus, a smaller distribution.
+
+EY: I did this the same way. I like how you printed out the 104 results since every time the code is run it spits out a different set. It made sense to set xlim from 0:30 but why did you set ylim from 0:30 too? It would be very unlikely but maybe you could get more than 30 sessions with the same number of calls.<br> 
+
+## Reflection
+This assignment was hard to start because I did not understand how the distribution functions worked and which ones to use. I overcame this challenge by rereading the Module 8 topics until I had a better understanding; I had to read the module about 4-5 times until I grasped the uses of the different functions in them. I also faced an issue with the first part, I didn't know how to show the plot as Pr(X>x). Originally I was simply plotting from 0 to 30 calls and subtracting the cumulative probability of x=8 from x=30 to get the number of cumulative probability of the number of calls from 9 to 30. But this was resolved when I was rereading Module 8 and using "?ppois" and setting the parameter "lower.tail" to FALSE, which simplified my code. Additionally, like the previous challenge, I didn't realize that "rpois" function could simulate results until I read that "rpois" exists from Module 8.
+
+I believe I understand how the "pois" functions work. After using the "?ppois", I learned many of the parameters of the function and how I can edit it to satisfy the needs of the plot. This was also a learning experience because I realized I missed quite a bit of information from Module 8 that would have made this assignment a lot faster. This assignment was slightly difficult, but I think it was due to me not understanding the concepts at first. After I figured it out, plotting the different distributions and graphs was very enjoyable and satisfying to create.
